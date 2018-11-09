@@ -9,11 +9,6 @@
     "email": "italo.vieira.dev@gmail.com",
     "url": "https://github.com/italosvieira"
   },
-  "scripts": {
-    "install": "npm i ./backend",
-    "start": "NODE_ENV=dev node src/server.js",
-    "lint": "/backend/node_modules/.bin/eslint backend/"
-  },
   "dependencies": {
     "nodejs-koa-backend": "file:backend"
   }

@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    container_name: nodejs-koa-backend
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+    - mongoDb
+    networks:
+    - nodejs-koa-network
+    environment:
+      - MONGO_USER=root
+      - MONGO_PASSWORD=root
+      - NODE_PORT=3000
+      - NODE_ENV=dev
+
+  mongoDb:
+    container_name: mongoDb
+    image: mongo
+    restart: always
+    networks:
+    - nodejs-koa-network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+
+networks:
+  nodejs-koa-network:
+    driver: bridge

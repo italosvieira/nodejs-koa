@@ -1,12 +1,13 @@
 const isNullOrUndefined = require('../util/isNullOrUndefined')
 
-const isDev = process.env.NODE_ENV === 'dev'
-const isProd = process.env.NODE_ENV === 'prod'
+const nodeEnv = process.env.NODE_ENV
+const isDev = nodeEnv === 'dev'
+const isProd = nodeEnv === 'prod'
 
 module.exports = {
-  isServerPropertiesInvalid: isNullOrUndefined(process.env.NODE_ENV),
+  isServerPropertiesInvalid: isNullOrUndefined(nodeEnv),
 
-  port: process.env.PORT || 3000,
+  port: process.env.NODE_PORT || 3000,
 
   env: {
     isDev,
