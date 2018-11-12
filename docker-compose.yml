@@ -14,6 +14,7 @@ services:
     networks:
     - nodejs-koa-network
     environment:
+      - MONGO_URL=mongodb://localhost
       - MONGO_USER=root
       - MONGO_PASSWORD=root
       - NODE_PORT=3000
@@ -23,11 +24,30 @@ services:
     container_name: mongoDb
     image: mongo
     restart: always
+    ports:
+      - 27017:27017
     networks:
-    - nodejs-koa-network
+      - nodejs-koa-network
     environment:
+      MONGO_INITDB_DATABASE: fruitsDb
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
+
+  mongo-express:
+      image: mongo-express
+      restart: always
+      depends_on:
+        - mongoDb
+      networks:
+        - nodejs-koa-network
+      ports:
+        - 8081:8081
+      environment:
+        ME_CONFIG_MONGODB_ENABLE_ADMIN: 'false'
+        ME_CONFIG_MONGODB_SERVER: mongoDb
+        ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+        ME_CONFIG_MONGODB_AUTH_USERNAME: root
+        ME_CONFIG_MONGODB_AUTH_PASSWORD: root
 
 networks:
   nodejs-koa-network:

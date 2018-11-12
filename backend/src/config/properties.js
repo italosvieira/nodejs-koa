@@ -5,12 +5,19 @@ const isDev = nodeEnv === 'dev'
 const isProd = nodeEnv === 'prod'
 
 module.exports = {
-  isServerPropertiesInvalid: isNullOrUndefined(nodeEnv),
+  isServerPropertiesInvalid: isNullOrUndefined(nodeEnv) || isNullOrUndefined(process.env.MONGO_URL) || isNullOrUndefined(process.env.MONGO_DBNAME),
 
   port: process.env.NODE_PORT || 3000,
 
   env: {
     isDev,
     isProd
+  },
+
+  mongo: {
+    url: process.env.MONGO_URL,
+    dbName: process.env.MONGO_DBNAME,
+    user: process.env.MONGO_USER,
+    password: process.env.MONGO_PASSWORD
   }
 }

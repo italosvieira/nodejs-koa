@@ -1,5 +1,5 @@
 module.exports = {
-  async get (ctx) {
+  get: async function (ctx) {
     ctx.body = ['Banana', 'Apple', 'Kiwi', 'Avocado', 'Pineapple']
   }
 }
