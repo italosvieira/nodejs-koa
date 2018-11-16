@@ -28,6 +28,8 @@ services:
       - 27017:27017
     networks:
       - nodejs-koa-network
+    volumes:
+      - ./backend/scripts/mongo:/docker-entrypoint-initdb.d
     environment:
       MONGO_INITDB_DATABASE: fruitsDb
       MONGO_INITDB_ROOT_USERNAME: root

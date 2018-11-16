@@ -1,0 +1,1 @@
+db.fruitsDb.save({ name: 'Banana' })
