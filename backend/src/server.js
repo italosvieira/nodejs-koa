@@ -1,14 +1,13 @@
 const Koa = require('koa')
 const Logger = require('koa-logger')
 const Helmet = require('koa-helmet')
-const Mongoose = require('mongoose')
 const Properties = require('./config/properties')
 const Router = require('./routes/router')
+const Mongo = require('./config/mongoDb')
 
-const db = Mongoose.connect(Properties.mongo.url + '/' + Properties.mongo.dbName, { useNewUrlParser: true }).then(
-  () => { console.log('Conected') },
-  error => { console.log(error) }
-)
+const Cat = Mongo.createModel('Cat', { name: String })
+const kitty = new Cat({ name: 'Zildjian' })
+kitty.save().then(() => console.log('meow'))
 
 if (Properties.isServerPropertiesInvalid) {
   console.log('Server Properties invalid.')
