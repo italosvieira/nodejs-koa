@@ -10,9 +10,9 @@ services:
     ports:
       - 3000:3000
     depends_on:
-    - mongoDb
+      - mongo
     networks:
-    - nodejs-koa-network
+      - nodejs-koa-network
     environment:
       - MONGO_URL=mongodb://localhost
       - MONGO_USER=root
@@ -20,8 +20,8 @@ services:
       - NODE_PORT=3000
       - NODE_ENV=dev
 
-  mongoDb:
-    container_name: mongoDb
+  mongo:
+    container_name: mongo
     image: mongo
     restart: always
     ports:
@@ -36,18 +36,19 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
 
   mongo-express:
-      image: mongo-express
-      restart: always
-      depends_on:
-        - mongoDb
-      networks:
-        - nodejs-koa-network
-      ports:
-        - 8081:8081
-      environment:
-        ME_CONFIG_MONGODB_SERVER: mongoDb
-        ME_CONFIG_MONGODB_ADMINUSERNAME: root
-        ME_CONFIG_MONGODB_ADMINPASSWORD: root
+    container_name: express
+    image: mongo-express
+    restart: always
+    depends_on:
+      - mongo
+    networks:
+      - nodejs-koa-network
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
 
 networks:
   nodejs-koa-network:

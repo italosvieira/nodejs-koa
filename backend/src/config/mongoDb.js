@@ -7,7 +7,7 @@ exports.createModel = function (name, model) {
     () => {
       console.log('Conected')
     },
-    error => { ServerUtils.exit('', 1, error) }
+    error => { ServerUtils.exit('Failed to connect to database.', 1, error) }
   )
   return mongoose.model(name, model)
 }

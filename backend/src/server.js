@@ -1,13 +1,10 @@
 const Koa = require('koa')
 const Logger = require('koa-logger')
 const Helmet = require('koa-helmet')
+const Cors = require('@koa/cors')
+
 const Properties = require('./config/properties')
 const Router = require('./routes/router')
-const Mongo = require('./config/mongoDb')
-
-const Cat = Mongo.createModel('Cat', { name: String })
-const kitty = new Cat({ name: 'Zildjian' })
-kitty.save().then(() => console.log('meow'))
 
 if (Properties.isServerPropertiesInvalid) {
   console.log('Server Properties invalid.')
@@ -17,6 +14,7 @@ if (Properties.isServerPropertiesInvalid) {
 const koa = new Koa()
 koa.use(Logger())
 koa.use(Helmet())
+koa.use(Cors())
 koa.use(Router.routes())
 koa.use(Router.allowedMethods())
 
