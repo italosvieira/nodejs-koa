@@ -2,7 +2,7 @@ const service = require('../service/fruit-service')
 
 module.exports = {
   get: async function (ctx) {
-    ctx.body = service.findAll()
+    ctx.body = await service.findAll()
   },
 
   post: async function (ctx) {

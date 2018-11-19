@@ -5,6 +5,10 @@ const fruit = Mongo.createModel('Fruit', fruitSchema)
 
 module.exports = {
   findAll: async function () {
-    fruit.find()
+    try {
+      return await fruit.findOne()
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
