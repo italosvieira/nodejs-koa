@@ -1,14 +1,23 @@
-const Mongo = require('../config/mongoDb')
+const mongoose = require('../config/mongoose')
 const fruitSchema = require('../schema/Fruit')
 
-const fruit = Mongo.createModel('Fruit', fruitSchema)
+const FruitModel = mongoose.createModel('Fruit', fruitSchema)
 
 module.exports = {
   findAll: async function () {
-    try {
-      return await fruit.findOne()
-    } catch (error) {
-      console.log(error)
-    }
+    return await FruitModel.find()
+  },
+
+  save: async function () {
+    const x = new FruitModel()
+    x.save(function (err, x) {
+      if (err) return console.error(err);
+    });
+
+    return await fruit.find()
+  },
+
+  delete: async function () {
+    return await fruit.find()
   }
 }
