@@ -1,24 +1,24 @@
 version: '3.7'
 
 services:
-  backend:
-    build:
-      context: backend
-      dockerfile: Dockerfile
-    container_name: nodejs-koa-backend
-    restart: always
-    ports:
-      - 3000:3000
-    depends_on:
-      - mongo
-    networks:
-      - nodejs-koa-network
-    environment:
-      - MONGO_URL=mongodb://localhost
-      - MONGO_USER=root
-      - MONGO_PASSWORD=root
-      - NODE_PORT=3000
-      - NODE_ENV=dev
+#  backend:
+#    build:
+#      context: backend
+#      dockerfile: Dockerfile
+#    container_name: nodejs-koa-backend
+#    restart: always
+#    ports:
+#      - 3000:3000
+#    depends_on:
+#      - mongo
+#    networks:
+#      - nodejs-koa-network
+#    environment:
+#      - MONGO_URL=mongodb://localhost:27017/fruitsDb
+#      - MONGO_USER=fruitUser
+#      - MONGO_PASSWORD=fruitPassword
+#      - NODE_PORT=3000
+#      - NODE_ENV=dev
 
   mongo:
     container_name: mongo
@@ -26,8 +26,8 @@ services:
     restart: always
     ports:
       - 27017:27017
-    networks:
-      - nodejs-koa-network
+#    networks:
+#      - nodejs-koa-network
     volumes:
       - ./backend/scripts/mongo:/docker-entrypoint-initdb.d
     environment:
@@ -35,21 +35,21 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
 
-  mongo-express:
-    container_name: express
-    image: mongo-express
-    restart: always
-    depends_on:
-      - mongo
-    networks:
-      - nodejs-koa-network
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_SERVER: mongo
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: root
-
-networks:
-  nodejs-koa-network:
-    driver: bridge
+#  mongo-express:
+#    container_name: express
+#    image: mongo-express
+#    restart: always
+#    depends_on:
+#      - mongo
+#    networks:
+#      - nodejs-koa-network
+#    ports:
+#      - 8081:8081
+#    environment:
+#      ME_CONFIG_MONGODB_SERVER: mongo
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+#
+#networks:
+#  nodejs-koa-network:
+#    driver: bridge
