@@ -8,16 +8,29 @@ module.exports = {
     return await FruitModel.find()
   },
 
-  save: async function () {
-    const x = new FruitModel()
-    x.save(function (err, x) {
-      if (err) return console.error(err);
-    });
+  save: async function (fruit) {
+    const x = new FruitModel({
+      name: fruit.name,
+      taste: fruit.taste,
+      active: fruit.active
+    })
 
-    return await fruit.find()
+    x.save(function (err, x) {
+      if (err) {
+        console.error(err)
+      } else {
+        return x
+      }
+    });
   },
 
-  delete: async function () {
-    return await fruit.find()
+  delete: async function (id) {
+    FruitModel.findOneAndDelete( { _id: id }, (error, fruit) => {
+      if (error) {
+        console.log(error)
+      } else {
+        return fruit
+      }
+    })
   }
 }

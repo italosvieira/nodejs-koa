@@ -10,21 +10,28 @@ module.exports = {
     }
   },
 
+  getById: async function (ctx) {
+    // TODO
+  },
+
   post: async function (ctx) {
-    ctx.body = ctx.request.body
-    console.log(ctx.request.body)
     try {
-      ctx.body = await service.findAll()
+      ctx.body = await service.save(ctx.request.body)
     } catch (error) {
       serverUtils.handleError(ctx, 400, error)
     }
   },
 
   put: async function (ctx) {
-    ctx.body = ['Banana', 'Apple', 'Kiwi', 'Avocado', 'Pineapple']
+    // TODO
   },
 
   delete: async function (ctx) {
-    ctx.body = ['Banana', 'Apple', 'Kiwi', 'Avocado', 'Pineapple']
+    try {
+      const id = ctx.params.id
+      await service.delete(id)
+    } catch (error) {
+      serverUtils.handleError(ctx, 400, error)
+    }
   }
 }
