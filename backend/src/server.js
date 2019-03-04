@@ -21,10 +21,10 @@ koa.use(Router.routes())
 koa.use(Router.allowedMethods())
 
 koa.use(BodyParser({
-  onerror: function (err, ctx) {
-    ctx.throw(422, `Couldn't parse the request.`);
+  onerror: function (error, ctx) {
+    ctx.throw(422, `Couldn't parse the request.`)
   }
-}));
+}))
 
 koa.listen(Properties.port, () => console.log(`Server running on port ${Properties.port}`))
 

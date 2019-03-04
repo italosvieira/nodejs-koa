@@ -1,36 +1,53 @@
-const mongoose = require('../config/mongoose')
-const fruitSchema = require('../schema/Fruit')
+const ServerUtils = require('../util/serverUtils')
+const Mongoose = require('../config/mongoose')
+const Schema = require('mongoose').Schema
 
-const FruitModel = mongoose.createModel('Fruit', fruitSchema)
+const FruitModel = Mongoose.createModel('Fruit', new Schema({
+  name: { type: String, required: true },
+  taste: { type: String, required: true },
+  active: Boolean
+}))
 
 module.exports = {
-  findAll: async function () {
-    return await FruitModel.find()
+  get: async function (ctx) {
+    try {
+      ctx.body = await FruitModel.find()
+    } catch (error) {
+      ServerUtils.handleError(ctx, 400, error)
+    }
   },
 
-  save: async function (fruit) {
-    const x = new FruitModel({
-      name: fruit.name,
-      taste: fruit.taste,
-      active: fruit.active
-    })
-
-    x.save(function (err, x) {
-      if (err) {
-        console.error(err)
-      } else {
-        return x
-      }
-    });
+  getById: async function (ctx) {
+    // TODO
   },
 
-  delete: async function (id) {
-    FruitModel.findOneAndDelete( { _id: id }, (error, fruit) => {
-      if (error) {
-        console.log(error)
-      } else {
-        return fruit
-      }
-    })
+  post: async function (ctx) {
+    try {
+      const x = new FruitModel({
+        name: ctx.request.body.name,
+        taste: ctx.request.body.taste,
+        active: ctx.request.body.active
+      })
+
+      ctx.body = await f(await x.save())
+    } catch (error) {
+      ServerUtils.handleError(ctx, 400, error)
+    }
+  },
+
+  put: async function (ctx) {
+    // TODO
+  },
+
+  delete: async function (ctx) {
+    try {
+      ctx.body = await f(await FruitModel.findOneAndDelete({ _id: ctx.params.id }))
+    } catch (error) {
+      ServerUtils.handleError(ctx, 400, error)
+    }
   }
+}
+
+async function f (mongoDoc) {
+  return { id: mongoDoc._id, name: mongoDoc.name, taste: mongoDoc.taste, active: mongoDoc.active }
 }

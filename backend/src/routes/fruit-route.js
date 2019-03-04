@@ -1,5 +1,5 @@
 const KoaRouter = require('koa-router')
-const controller = require('../controller/fruit-controller')
+const controller = require('../service/fruit-service')
 const router = new KoaRouter({ prefix: '/api/private/fruits' })
 
 router.get('/', controller.get)
