@@ -1,26 +1,23 @@
 const Koa = require('koa')
-const koaLogger = require('koa-logger')
-const Helmet = require('koa-helmet')
-const Cors = require('@koa/cors')
-const BodyParser = require('koa-bodyparser')
+const koaHelmet = require('koa-helmet')
+const koaCors = require('@koa/cors')
+const koaBodyParser = require('koa-bodyparser')
+
+const properties = require('./config/properties')
+const router = require('./routes/router')
 const logger = require('./config/winston')
 
-const Properties = require('./config/properties')
-const Router = require('./routes/router')
-
-if (Properties.isServerPropertiesInvalid) {
+if (properties.isServerPropertiesInvalid) {
   logger.log('error', 'Server Properties invalid.')
   process.exit(1)
 }
 
 const koa = new Koa()
-koa.use(koaLogger())
-koa.use(Helmet())
-koa.use(Cors())
-koa.use(BodyParser())
-koa.use(Router.routes())
-koa.use(Router.allowedMethods())
-
-koa.listen(Properties.port, () => logger.log('info', `Server running on port ${Properties.port}`))
+koa.use(koaHelmet())
+koa.use(koaCors())
+koa.use(koaBodyParser())
+koa.use(router.routes())
+koa.use(router.allowedMethods())
+koa.listen(properties.port, () => logger.log('info', `Server running on port ${properties.port}.`))
 
 module.exports = koa
