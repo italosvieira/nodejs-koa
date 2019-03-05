@@ -9,7 +9,7 @@ exports.createModel = function (name, model) {
     () => {
       logger.log('info', 'Connected to fruits database.')
     },
-    error => { ServerUtils.exit('Failed to connect to fruits database.', 1, error) }
+    error => { ServerUtils.exit('Failed to connect to fruits database. ', 1, error) }
   )
   return mongoose.model(name, model)
 }

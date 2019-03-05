@@ -1,12 +1,14 @@
+const logger = require('../config/winston')
+
 module.exports = {
   exit: function (msg, code, error) {
-    console.log(msg, error)
+    logger.log('error', msg, error)
     process.exit(code)
   },
 
-  // TODO fiz the return error
+  // TODO fix the return error
   handleError: function (ctx, status, error) {
-    console.log(error.stack)
+    logger.log('error', error)
 
     ctx.status = status
     ctx.body = {

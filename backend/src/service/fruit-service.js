@@ -1,8 +1,9 @@
-const ServerUtils = require('../util/serverUtils')
-const Mongoose = require('../config/mongoose')
 const Schema = require('mongoose').Schema
+const serverUtils = require('../util/serverUtils')
+const mongoose = require('../config/mongoose')
+const logger = require('../config/winston')
 
-const FruitModel = Mongoose.createModel('Fruit', new Schema({
+const FruitModel = mongoose.createModel('Fruit', new Schema({
   name: { type: String, required: true },
   taste: { type: String, required: true },
   active: Boolean
@@ -11,9 +12,10 @@ const FruitModel = Mongoose.createModel('Fruit', new Schema({
 module.exports = {
   get: async function (ctx) {
     try {
+      logger.log('info', `Request Method: ${ctx.method}, Request Route: ${ctx.originalUrl}`)
       ctx.body = await FruitModel.find().select(' name taste active ')
     } catch (error) {
-      ServerUtils.handleError(ctx, 400, error)
+      serverUtils.handleError(ctx, 500, error)
     }
   },
 
@@ -21,7 +23,7 @@ module.exports = {
     try {
       ctx.body = await FruitModel.findOne({ _id: ctx.params.id }).select(' name taste active ')
     } catch (error) {
-      ServerUtils.handleError(ctx, 400, error)
+      serverUtils.handleError(ctx, 400, error)
     }
   },
 
@@ -35,7 +37,7 @@ module.exports = {
 
       ctx.body = await modelParser(await fruit.save())
     } catch (error) {
-      ServerUtils.handleError(ctx, 400, error)
+      serverUtils.handleError(ctx, 400, error)
     }
   },
 
@@ -47,7 +49,7 @@ module.exports = {
         active: ctx.request.body.active
       }, { new: true }))
     } catch (error) {
-      ServerUtils.handleError(ctx, 400, error)
+      serverUtils.handleError(ctx, 400, error)
     }
   },
 
@@ -55,7 +57,7 @@ module.exports = {
     try {
       ctx.body = await FruitModel.findOneAndDelete({ _id: ctx.params.id }).select(' name taste active ')
     } catch (error) {
-      ServerUtils.handleError(ctx, 400, error)
+      serverUtils.handleError(ctx, 400, error)
     }
   }
 }
