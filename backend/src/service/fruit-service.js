@@ -1,7 +1,9 @@
 const Schema = require('mongoose').Schema
-const serverUtils = require('../util/serverUtils')
+
 const mongoose = require('../config/mongoose')
-const logger = require('../config/winston')
+/* const logger = require('../config/winston') */
+const logRequest = require('../util/logRequest')
+const exceptionHandler = require('../util/exceptionHandler')
 
 const FruitModel = mongoose.createModel('Fruit', new Schema({
   name: { type: String, required: true },
@@ -11,23 +13,28 @@ const FruitModel = mongoose.createModel('Fruit', new Schema({
 
 module.exports = {
   get: async function (ctx) {
+    logRequest(ctx)
+
     try {
-      logger.log('info', `Request Method: ${ctx.method}, Request Route: ${ctx.originalUrl}`)
       ctx.body = await FruitModel.find().select(' name taste active ')
     } catch (error) {
-      serverUtils.handleError(ctx, 500, error)
+      exceptionHandler(ctx, 500, error)
     }
   },
 
   getById: async function (ctx) {
+    logRequest(ctx)
+
     try {
       ctx.body = await FruitModel.findOne({ _id: ctx.params.id }).select(' name taste active ')
     } catch (error) {
-      serverUtils.handleError(ctx, 400, error)
+      exceptionHandler(ctx, 400, error)
     }
   },
 
   post: async function (ctx) {
+    logRequest(ctx)
+
     try {
       const fruit = new FruitModel({
         name: ctx.request.body.name,
@@ -37,11 +44,13 @@ module.exports = {
 
       ctx.body = await modelParser(await fruit.save())
     } catch (error) {
-      serverUtils.handleError(ctx, 400, error)
+      exceptionHandler(ctx, 400, error)
     }
   },
 
   put: async function (ctx) {
+    logRequest(ctx)
+
     try {
       ctx.body = await modelParser(await FruitModel.findOneAndUpdate({ _id: ctx.request.body.id }, {
         name: ctx.request.body.name,
@@ -49,15 +58,17 @@ module.exports = {
         active: ctx.request.body.active
       }, { new: true }))
     } catch (error) {
-      serverUtils.handleError(ctx, 400, error)
+      exceptionHandler(ctx, 400, error)
     }
   },
 
   delete: async function (ctx) {
+    logRequest(ctx)
+
     try {
       ctx.body = await FruitModel.findOneAndDelete({ _id: ctx.params.id }).select(' name taste active ')
     } catch (error) {
-      serverUtils.handleError(ctx, 400, error)
+      exceptionHandler(ctx, 400, error)
     }
   }
 }

@@ -1,15 +1,15 @@
 const mongoose = require('mongoose')
-const Properties = require('./properties')
-const ServerUtils = require('../util/serverUtils')
+const properties = require('./properties')
 const logger = require('./winston')
+const exit = require('../util/exit')
 
 exports.createModel = function (name, model) {
   mongoose.set('useFindAndModify', false)
-  mongoose.connect(Properties.mongo.url, { useNewUrlParser: true, user: Properties.mongo.user, pass: Properties.mongo.password }).then(
+  mongoose.connect(properties.mongo.url, { useNewUrlParser: true, user: properties.mongo.user, pass: properties.mongo.password }).then(
     () => {
       logger.log('info', 'Connected to fruits database.')
     },
-    error => { ServerUtils.exit('Failed to connect to fruits database. ', 1, error) }
+    error => { exit('Failed to connect to fruits database. ', 1, error) }
   )
   return mongoose.model(name, model)
 }
