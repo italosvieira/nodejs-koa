@@ -1,9 +1,9 @@
 const Schema = require('mongoose').Schema
 
 const mongoose = require('../config/mongoose')
-/* const logger = require('../config/winston') */
 const logRequest = require('../util/logRequest')
 const exceptionHandler = require('../util/exceptionHandler')
+const validateMongoId = require('../util/validateMongoId')
 
 const FruitModel = mongoose.createModel('Fruit', new Schema({
   name: { type: String, required: true },
@@ -18,7 +18,7 @@ module.exports = {
     try {
       ctx.body = await FruitModel.find().select(' name taste active ')
     } catch (error) {
-      exceptionHandler(ctx, 500, error)
+      exceptionHandler(ctx, error)
     }
   },
 
@@ -26,9 +26,10 @@ module.exports = {
     logRequest(ctx)
 
     try {
+      await validateMongoId(ctx.params.id)
       ctx.body = await FruitModel.findOne({ _id: ctx.params.id }).select(' name taste active ')
     } catch (error) {
-      exceptionHandler(ctx, 400, error)
+      exceptionHandler(ctx, error)
     }
   },
 
@@ -44,7 +45,7 @@ module.exports = {
 
       ctx.body = await modelParser(await fruit.save())
     } catch (error) {
-      exceptionHandler(ctx, 400, error)
+      exceptionHandler(ctx, error)
     }
   },
 
@@ -52,13 +53,15 @@ module.exports = {
     logRequest(ctx)
 
     try {
+      await validateMongoId(ctx.request.body.id)
+
       ctx.body = await modelParser(await FruitModel.findOneAndUpdate({ _id: ctx.request.body.id }, {
         name: ctx.request.body.name,
         taste: ctx.request.body.taste,
         active: ctx.request.body.active
       }, { new: true }))
     } catch (error) {
-      exceptionHandler(ctx, 400, error)
+      exceptionHandler(ctx, error)
     }
   },
 
@@ -66,9 +69,10 @@ module.exports = {
     logRequest(ctx)
 
     try {
+      await validateMongoId(ctx.params.id)
       ctx.body = await FruitModel.findOneAndDelete({ _id: ctx.params.id }).select(' name taste active ')
     } catch (error) {
-      exceptionHandler(ctx, 400, error)
+      exceptionHandler(ctx, error)
     }
   }
 }
