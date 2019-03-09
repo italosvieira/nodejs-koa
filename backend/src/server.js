@@ -2,22 +2,29 @@ const Koa = require('koa')
 const koaHelmet = require('koa-helmet')
 const koaCors = require('@koa/cors')
 const koaBodyParser = require('koa-bodyparser')
+const Jwt = require('koa-jwt')
 
 const properties = require('./config/properties')
-const router = require('./routes/router')
+const publicRoutes = require('./routes/public-router')
+const privateRoutes = require('./routes/private-router')
 const logger = require('./config/winston')
 const exit = require('./util/exit')
+const UnauthorizedExceptionHandler = require('./util/unauthorizedExceptionHandler')
 
 if (properties.isServerPropertiesInvalid) {
   exit('Server Properties invalid.', 1)
 }
 
-const koa = new Koa()
-koa.use(koaHelmet())
-koa.use(koaCors())
-koa.use(koaBodyParser())
-koa.use(router.routes())
-koa.use(router.allowedMethods())
-koa.listen(properties.port, () => logger.log('info', `Application running on port ${properties.port}.`))
+const app = new Koa()
+app.use(koaHelmet())
+app.use(koaCors())
+app.use(koaBodyParser())
+app.use(UnauthorizedExceptionHandler())
+app.use(publicRoutes.routes())
+app.use(publicRoutes.allowedMethods())
+app.use(Jwt({ secret: 'shared-secret' }))
+app.use(privateRoutes.routes())
+app.use(privateRoutes.allowedMethods())
+app.listen(properties.port, () => logger.log('info', `Application running on port ${properties.port}.`))
 
-module.exports = koa
+module.exports = app
