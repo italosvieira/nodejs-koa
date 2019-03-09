@@ -1,11 +1,12 @@
 const KoaRouter = require('koa-router')
-const controller = require('../service/fruit-service')
+const roles = require('koa-jwt-roles')
+const service = require('../service/fruit-service')
 const router = new KoaRouter({ prefix: '/api/private/fruits' })
 
-router.get('/', controller.get)
-  .get('/:id', controller.getById)
-  .post('/', controller.post)
-  .put('/', controller.put)
-  .del('/:id', controller.delete)
+router.get('/', roles('admin'), service.get)
+router.get('/:id', service.getById)
+router.post('/', service.post)
+router.put('/', service.put)
+router.del('/:id', service.delete)
 
 module.exports = router.routes()
