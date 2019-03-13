@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const properties = require('./properties')
 const logger = require('./winston')
-const exit = require('../util/exit')
+const exit = require('../utils/exit')
 
 exports.createModel = function (name, model) {
   mongoose.set('useFindAndModify', false)

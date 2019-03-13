@@ -1,5 +1,5 @@
 const KoaRouter = require('koa-router')
-const service = require('../service/login-service')
+const service = require('../services/login-service')
 const router = new KoaRouter({ prefix: '/api/public/login' })
 
 router.post('/', service.post)

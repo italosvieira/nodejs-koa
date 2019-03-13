@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const logRequest = require('../util/logRequest')
+const logRequest = require('../utils/logRequest')
 
 module.exports = {
   post: async function (ctx) {

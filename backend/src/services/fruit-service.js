@@ -1,9 +1,9 @@
 const Schema = require('mongoose').Schema
 
 const mongoose = require('../config/mongoose')
-const logRequest = require('../util/logRequest')
-const exceptionHandler = require('../util/exceptionHandler')
-const validateMongoId = require('../util/validateMongoId')
+const logRequest = require('../utils/logRequest')
+const exceptionHandler = require('../handlers/exceptionHandler')
+const validateMongoId = require('../utils/validateMongoId')
 
 const FruitModel = mongoose.createModel('Fruit', new Schema({
   name: { type: String, required: true },

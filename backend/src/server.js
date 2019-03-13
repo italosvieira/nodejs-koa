@@ -8,8 +8,8 @@ const properties = require('./config/properties')
 const publicRoutes = require('./routes/public-router')
 const privateRoutes = require('./routes/private-router')
 const logger = require('./config/winston')
-const exit = require('./util/exit')
-const SecurityExceptionHandler = require('./util/securityExceptionHandler')
+const exit = require('./utils/exit')
+const SecurityExceptionHandler = require('./handlers/securityExceptionHandler')
 
 properties.loadAsymmetricKeys()
 

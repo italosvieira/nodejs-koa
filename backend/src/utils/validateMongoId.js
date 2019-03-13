@@ -1,5 +1,5 @@
-const BusinessException = require('../exception/businessException')
-const isNullOrUndefined = require('../util/isNullOrUndefined')
+const BusinessException = require('../exceptions/businessException')
+const isNullOrUndefined = require('.//isNullOrUndefined')
 const isMongoId = require('validator/lib/isMongoId')
 
 module.exports = function (id) {

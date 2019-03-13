@@ -1,5 +1,5 @@
 const fs = require('fs')
-const isNullOrUndefined = require('../util/isNullOrUndefined')
+const isNullOrUndefined = require('../utils/isNullOrUndefined')
 
 const nodeEnv = process.env.NODE_ENV
 const isDev = nodeEnv === 'dev'

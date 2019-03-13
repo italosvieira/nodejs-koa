@@ -1,4 +1,4 @@
-const BusinessException = require('../exception/businessException')
+const BusinessException = require('../exceptions/businessException')
 const ValidationError = require('mongoose').Error.ValidationError
 const logger = require('../config/winston')
 

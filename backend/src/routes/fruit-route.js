@@ -1,6 +1,6 @@
 const KoaRouter = require('koa-router')
 const roles = require('koa-jwt-roles')
-const service = require('../service/fruit-service')
+const service = require('../services/fruit-service')
 const router = new KoaRouter({ prefix: '/api/private/fruits' })
 
 router.get('/', roles('admin'), service.get)
