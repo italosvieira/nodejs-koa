@@ -1,15 +1,17 @@
 const mongoose = require('mongoose')
-const properties = require('./properties')
 const logger = require('./winston')
-const exit = require('../utils/exit')
 
-exports.createModel = function (name, model) {
+module.exports = async function () {
+  logger.info('Establishing database connection.')
+
   mongoose.set('useFindAndModify', false)
-  mongoose.connect(properties.mongo.url, { useNewUrlParser: true, user: properties.mongo.user, pass: properties.mongo.password }).then(
+  await mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, user: process.env.MONGO_USER, pass: process.env.MONGO_PASSWORD }).then(
     () => {
-      logger.log('info', 'Connected to fruits database.')
+      logger.info('Fruits database connection established successfully.')
     },
-    error => { exit('Failed to connect to fruits database. ', 1, error) }
+    error => {
+      logger.error('Failed to establishing connection to fruits database. ', error)
+      process.exit(1)
+    }
   )
-  return mongoose.model(name, model)
 }
