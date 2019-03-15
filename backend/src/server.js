@@ -2,6 +2,9 @@ const Koa = require('koa')
 const koaCors = require('@koa/cors')
 const koaHelmet = require('koa-helmet')
 const koaBodyParser = require('koa-bodyparser')
+const KoaCompress = require('koa-compress')
+const KoaResponseTime = require('koa-response-time')
+const KoaLogger = require('koa-logger')
 
 const Mongoose = require('./config/mongoose')
 const AsymmetricKeysLoader = require('./config/asymmetricKeysLoader')
@@ -16,12 +19,13 @@ async function start () {
   EnvironmentVariablesValidator()
   await Mongoose()
 
-  // Middleware is called on each request. Stuff that is loaded only once or is needed on middleware needs to be loaded prior. Remember to gzip stuff
   const app = new Koa()
-  // Logger and respondetime middleware here.
+  app.use(KoaResponseTime())
+  app.use(koaBodyParser())
+  app.use(KoaLogger((str) => { logger.info(str) }))
   app.use(koaCors())
   app.use(koaHelmet())
-  app.use(koaBodyParser())
+  app.use(KoaCompress())
   // Security validator middleware here
   /* app.use(SecurityExceptionHandler()) */
   app.use(publicRoutes.routes())
