@@ -1,11 +1,9 @@
-const Schema = require('mongoose').Schema
-
-const mongoose = require('../config/mongoose')
+const mongoose = require('mongoose')
 const logRequest = require('../utils/logRequest')
 const exceptionHandler = require('../handlers/exceptionHandler')
 const validateMongoId = require('../utils/validateMongoId')
 
-const FruitModel = mongoose.createModel('Fruit', new Schema({
+const FruitModel = mongoose.model('Fruit', new mongoose.Schema({
   name: { type: String, required: true },
   taste: { type: String, required: true },
   active: Boolean
