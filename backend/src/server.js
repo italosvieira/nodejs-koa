@@ -9,6 +9,7 @@ const KoaLogger = require('koa-logger')
 const Mongoose = require('./config/mongoose')
 const AsymmetricKeysLoader = require('./config/asymmetricKeysLoader')
 const EnvironmentVariablesValidator = require('./config/environmentVariablesValidator')
+const ExceptionHandler = require('./middleware/exceptionHandler')
 
 const logger = require('./config/winston')
 const publicRoutes = require('./routes/public-router')
@@ -26,8 +27,7 @@ async function start () {
   app.use(koaCors())
   app.use(koaHelmet())
   app.use(KoaCompress())
-  // Security validator middleware here
-  /* app.use(SecurityExceptionHandler()) */
+  app.use(ExceptionHandler())
   app.use(publicRoutes.routes())
   app.use(publicRoutes.allowedMethods())
   // JWT middleware here.

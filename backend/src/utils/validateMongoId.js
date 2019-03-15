@@ -1,9 +1,8 @@
 const BusinessException = require('../exceptions/businessException')
-const isNullOrUndefined = require('.//isNullOrUndefined')
 const isMongoId = require('validator/lib/isMongoId')
 
 module.exports = function (id) {
-  if (isNullOrUndefined(id)) {
+  if (!id) {
     throw new BusinessException('Parameter id must not be null.', 400)
   }
 
