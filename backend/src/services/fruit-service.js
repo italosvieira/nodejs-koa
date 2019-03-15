@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const logRequest = require('../utils/logRequest')
 const exceptionHandler = require('../handlers/exceptionHandler')
 const validateMongoId = require('../utils/validateMongoId')
 
@@ -11,8 +10,6 @@ const FruitModel = mongoose.model('Fruit', new mongoose.Schema({
 
 module.exports = {
   get: async function (ctx) {
-    logRequest(ctx)
-
     try {
       ctx.body = await FruitModel.find().select(' name taste active ')
     } catch (error) {
@@ -21,8 +18,6 @@ module.exports = {
   },
 
   getById: async function (ctx) {
-    logRequest(ctx)
-
     try {
       await validateMongoId(ctx.params.id)
       ctx.body = await FruitModel.findOne({ _id: ctx.params.id }).select(' name taste active ')
@@ -32,8 +27,6 @@ module.exports = {
   },
 
   post: async function (ctx) {
-    logRequest(ctx)
-
     try {
       const fruit = new FruitModel({
         name: ctx.request.body.name,
@@ -48,8 +41,6 @@ module.exports = {
   },
 
   put: async function (ctx) {
-    logRequest(ctx)
-
     try {
       await validateMongoId(ctx.request.body.id)
 
@@ -64,8 +55,6 @@ module.exports = {
   },
 
   delete: async function (ctx) {
-    logRequest(ctx)
-
     try {
       await validateMongoId(ctx.params.id)
       ctx.body = await FruitModel.findOneAndDelete({ _id: ctx.params.id }).select(' name taste active ')
