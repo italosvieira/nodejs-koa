@@ -1,11 +1,5 @@
-const mongoose = require('mongoose')
+const FruitModel = require('../models/fruit')
 const validateMongoId = require('../utils/validateMongoId')
-
-const FruitModel = mongoose.model('Fruit', new mongoose.Schema({
-  name: { type: String, required: true },
-  taste: { type: String, required: true },
-  active: Boolean
-}))
 
 module.exports = {
   get: async function (ctx) {
