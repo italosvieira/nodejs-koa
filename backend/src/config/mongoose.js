@@ -5,6 +5,7 @@ module.exports = async function () {
   logger.info('Establishing database connection.')
 
   mongoose.set('useFindAndModify', false)
+  mongoose.set('useCreateIndex', true)
   await mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, user: process.env.MONGO_USER, pass: process.env.MONGO_PASSWORD }).then(
     () => {
       logger.info('Fruits database connection established successfully.')

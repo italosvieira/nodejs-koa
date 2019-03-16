@@ -1,10 +1,9 @@
 const KoaRouter = require('koa-router')
-
-const home = require('./home-route')
-const login = require('./login-route')
+const home = require('./home-router')
+const auth = require('./auth-router')
 
 const router = new KoaRouter()
 router.use(home)
-router.use(login)
+router.use(auth)
 
 module.exports = router
