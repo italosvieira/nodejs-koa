@@ -10,6 +10,7 @@ const Mongoose = require('./config/mongoose')
 const AsymmetricKeysLoader = require('./config/asymmetricKeysLoader')
 const EnvironmentVariablesValidator = require('./config/environmentVariablesValidator')
 const ExceptionHandler = require('./middleware/exceptionHandler')
+const Jwt = require('./middleware/jwt')
 
 const logger = require('./config/winston')
 const publicRoutes = require('./routes/public-router')
@@ -30,8 +31,7 @@ async function start () {
   app.use(ExceptionHandler())
   app.use(publicRoutes.routes())
   app.use(publicRoutes.allowedMethods())
-  // JWT middleware here.
-  /* app.use(Jwt({ secret: Buffer.from(process.env.ASYMMETRIC_PUBLIC_KEY) }, { algorithm: 'RS256' })) */
+  app.use(Jwt())
   app.use(privateRoutes.routes())
   app.use(privateRoutes.allowedMethods())
   app.listen(process.env.NODE_PORT || 3000, () => logger.info(`Application running on port ${process.env.NODE_PORT || 3000}.`))
