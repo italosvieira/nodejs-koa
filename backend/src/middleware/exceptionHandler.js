@@ -17,10 +17,10 @@ module.exports = function () {
         ctx.body = createResponse(ctx.originalUrl, ctx.method, 400, error.message)
       } else if (error.name === 'MongoNetworkError') {
         ctx.status = 503
-        ctx.body = createResponse(ctx.originalUrl, ctx.method, 503, error.message)
+        ctx.body = createResponse(ctx.originalUrl, ctx.method, 503, 'Service is unavailable. Try again later.')
       } else {
         ctx.status = 500
-        ctx.body = createResponse(ctx.originalUrl, ctx.method, 500, error.message)
+        ctx.body = createResponse(ctx.originalUrl, ctx.method, 500, 'A unexpected error has occurred.')
       }
     }
   }
