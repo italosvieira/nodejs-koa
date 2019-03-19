@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('src/config/mongoose')
 const logger = require('./winston')
 
 module.exports = async function () {
