@@ -6,10 +6,15 @@ COPY package-lock.json .
 COPY /src ./src
 RUN apk --no-cache add --virtual builds-deps build-base python
 RUN npm install --production
+RUN apk add --update openssl
+RUN openssl genrsa -out AsymmetricPrivateKey.pem 2048
+RUN openssl rsa -in AsymmetricPrivateKey.pem -pubout > AsymmetricPublicKey.pem
 
 FROM node:10.15.3-alpine as app
 COPY --from=buildPhase /app/node_modules /app/node_modules
 COPY --from=buildPhase /app/src /app/src
+COPY --from=buildPhase /app/AsymmetricPrivateKey.pem /app
+COPY --from=buildPhase /app/AsymmetricPublicKey.pem /app
 ENV MONGO_URL default
 ENV MONGO_USER default
 ENV MONGO_PASSWORD default
