@@ -1,4 +1,4 @@
-const winston = require('src/config/winston')
+const winston = require('winston')
 
 module.exports = winston.createLogger({
   level: 'info',
