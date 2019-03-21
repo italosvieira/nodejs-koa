@@ -5,32 +5,13 @@ const BusinessException = require('../exceptions/businessException')
 
 module.exports = {
   login: async function (ctx) {
-    // TODO token with secure cookies.
-    const user = await validateUserCredentials(ctx.request.body.email, ctx.request.body.password)
-
-    const token = {
-      token: jwt.sign({
-        sub: user._id,
-        exp: Math.floor(Date.now() / 1000) + 3600,
-        iat: Math.floor(Date.now() / 1000) - 30,
-        user: { id: user._id, roles: user.roles || [], permissions: user.permissions || [] } },
-      Buffer.from(process.env.ASYMMETRIC_PRIVATE_KEY),
-      { algorithm: 'RS256' })
-    }
+    const token = createToken(await validateUserCredentials(ctx.request.body.email, ctx.request.body.password))
+    ctx.cookies.set('token', token.token, { maxAge: Math.floor(Date.now() / 1000) + 3600 })
+    ctx.status = 200
   },
 
   token: async function (ctx) {
-    const user = await validateUserCredentials(ctx.request.body.email, ctx.request.body.password)
-
-    ctx.body = {
-      token: jwt.sign({
-        sub: user._id,
-        exp: Math.floor(Date.now() / 1000) + 3600,
-        iat: Math.floor(Date.now() / 1000) - 30,
-        user: { id: user._id, roles: user.roles || [], permissions: user.permissions || [] } },
-      Buffer.from(process.env.ASYMMETRIC_PRIVATE_KEY),
-      { algorithm: 'RS256' })
-    }
+    ctx.body = createToken(await validateUserCredentials(ctx.request.body.email, ctx.request.body.password))
   },
 
   validateUserCredentials: async function (email, password) {
@@ -55,5 +36,17 @@ async function validateUserCredentials (email, password) {
     return user
   } else {
     throw new BusinessException(`Invalid Credentials. Bcrypt compare did not match. Email: ${user.email}`, 'Invalid Credentials.', 401)
+  }
+}
+
+function createToken (user) {
+  return {
+    token: jwt.sign({
+      sub: user._id,
+      exp: Math.floor(Date.now() / 1000) + 3600,
+      iat: Math.floor(Date.now() / 1000) - 30,
+      user: { id: user._id, roles: user.roles || [], permissions: user.permissions || [] } },
+    Buffer.from(process.env.ASYMMETRIC_PRIVATE_KEY),
+    { algorithm: 'RS256' })
   }
 }
