@@ -10,6 +10,8 @@
     "url": "https://github.com/italosvieira"
   },
   "scripts": {
+    "start": "PATH_ASYMMETRIC_PUBLIC_KEY=AsymmetricPublicKey.pem PATH_ASYMMETRIC_PRIVATE_KEY=AsymmetricPrivateKey.pem NODE_PORT=3000 NODE_ENV=dev MONGO_URL=mongodb://localhost:27017/fruitsDb MONGO_USER=fruitUser MONGO_PASSWORD=fruitPassword nodemon src/server.js",
+    "test": "",
     "lint": "eslint src/"
   },
   "dependencies": {
@@ -28,6 +30,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "nodemon": "^1.18.10",
     "eslint": "^5.8.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
