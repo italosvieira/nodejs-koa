@@ -10,9 +10,9 @@
     "url": "https://github.com/italosvieira"
   },
   "scripts": {
-    "start": "PATH_ASYMMETRIC_PUBLIC_KEY=AsymmetricPublicKey.pem PATH_ASYMMETRIC_PRIVATE_KEY=AsymmetricPrivateKey.pem NODE_PORT=3000 NODE_ENV=dev MONGO_URL=mongodb://localhost:27017/fruitsDb MONGO_USER=fruitUser MONGO_PASSWORD=fruitPassword nodemon src/server.js",
-    "test": "",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "start": "nodemon src/server.js",
+    "server": "PATH_ASYMMETRIC_PUBLIC_KEY=AsymmetricPublicKey.pem PATH_ASYMMETRIC_PRIVATE_KEY=AsymmetricPrivateKey.pem NODE_PORT=3000 NODE_ENV=dev MONGO_URL=mongodb://localhost:27017/fruitsDb MONGO_USER=fruitUser MONGO_PASSWORD=fruitPassword nodemon src/server.js"
   },
   "dependencies": {
     "@koa/cors": "^3.0.0",
